@@ -14,17 +14,18 @@ class LoadingButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var bgColor: Int = Color.BLACK
-    private var textColor: Int = Color.BLACK
-    private var cornerRadius: Float = 12f
-    private var shadowRadius: Float = 0f // Уменьшена тень до 0
-    private var shadowColor: Int = Color.TRANSPARENT // Тень установлена в прозрачный цвет
+    private var bgColor: Int
+    private var textColor: Int
+    private var progressColor: Int
+    private var textSize: Float
+    private var cornerRadius: Float
+    private var progressMax: Int
 
     @Volatile
     private var progress: Double = 0.0
     private var valueAnimator: ValueAnimator
 
-    private var buttonState: ButtonState by Delegates.observable(ButtonState.Completed) { p, old, new ->
+    private var buttonState: ButtonState by Delegates.observable(ButtonState.Completed) { _, _, _ ->
     }
 
     private val updateListener = ValueAnimator.AnimatorUpdateListener {
@@ -65,17 +66,21 @@ class LoadingButton @JvmOverloads constructor(
                 R.styleable.LoadingButton_textColor,
                 ContextCompat.getColor(context, R.color.whiteTextColor)
             )
+            progressColor = attr.getColor(
+                R.styleable.LoadingButton_progressColor,
+                Color.parseColor("#004349")
+            )
+            textSize = attr.getDimension(
+                R.styleable.LoadingButton_textSize,
+                55.0f
+            )
             cornerRadius = attr.getDimension(
                 R.styleable.LoadingButton_cornerRadius,
                 12f
             )
-            shadowRadius = attr.getDimension(
-                R.styleable.LoadingButton_shadowRadius,
-                0f // Уменьшена тень до 0
-            )
-            shadowColor = attr.getColor(
-                R.styleable.LoadingButton_shadowColor,
-                Color.TRANSPARENT // Тень установлена в прозрачный цвет
+            progressMax = attr.getInt(
+                R.styleable.LoadingButton_progressMax,
+                100
             )
         } finally {
             attr.recycle()
@@ -84,9 +89,8 @@ class LoadingButton @JvmOverloads constructor(
         paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
-            textSize = 55.0f
+            this.textSize = this@LoadingButton.textSize
             typeface = Typeface.create("", Typeface.BOLD)
-            setShadowLayer(shadowRadius, 0f, 0f, shadowColor)
         }
 
         setLayerType(LAYER_TYPE_SOFTWARE, paint)
@@ -113,10 +117,10 @@ class LoadingButton @JvmOverloads constructor(
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, paint)
 
         if (buttonState == ButtonState.Loading) {
-            paint.color = Color.parseColor("#004349")
+            paint.color = progressColor
             canvas.drawRoundRect(
                 0f, 0f,
-                (width * (progress / 100)).toFloat(), height.toFloat(),
+                (width * (progress / progressMax)).toFloat(), height.toFloat(),
                 cornerRadius, cornerRadius, paint
             )
         }
