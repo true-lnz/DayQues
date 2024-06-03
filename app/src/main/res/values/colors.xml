@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00a8ff</color>
+    <color name="colorPrimaryDark">#00a8ff</color>
+    <color name="colorAccent">#ed7071</color>
+
+    <color name="subTextColor">#7e7e7e</color>
+    <color name="subBgColor">#ffffff</color>
+    <color name="mainBgColor">#f9f9fd</color>
+    <color name="mainTextColor">#000000</color>
+    <color name="whiteTextColor">#ffffff</color>
+    <color name="bottomItemColor">#80899C</color>
+
+    <color name="black_overlay">#66000000</color>
+</resources>

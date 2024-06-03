@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/home">
+
+    <include app:graph="@navigation/home"/>
+    <include app:graph="@navigation/auth"/>
+    <include app:graph="@navigation/favorites"/>
+    <include app:graph="@navigation/notifications"/>
+    <include app:graph="@navigation/dayques"/>
+    <include app:graph="@navigation/questions"/>
+    <include app:graph="@navigation/sign_up"/>
+    <include app:graph="@navigation/profile"/>
+
+    <action
+        android:id="@+id/action_logout"
+        app:destination="@id/authFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@id/main_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_profileEdit"
+        app:destination="@id/profileEdit"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@id/main_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_home"
+        app:destination="@id/homeFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@id/main_graph"
+        app:popUpToInclusive="true" />
+
+</navigation>
+
+
+
+
+
+
+

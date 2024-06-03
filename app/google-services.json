@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "654007353588",
+    "firebase_url": "https://dayques-d131f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "dayques-d131f",
+    "storage_bucket": "dayques-d131f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654007353588:android:53a491bea39570bed95ea1",
+        "android_client_info": {
+          "package_name": "com.instamobile.firebaseStarterKit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654007353588-mcclu9ksj1s4prafi2fsqopin0lm1321.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instamobile.firebaseStarterKit",
+            "certificate_hash": "f64e3c990c7649e3eadcc08c1e2534d1f5ff8e0d"
+          }
+        },
+        {
+          "client_id": "654007353588-lfit9m0507c38qgq4nlsic1i4clmrr3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAon2N514ryRvcPJ6Pd-Ec4q2cOozU0M54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654007353588-lfit9m0507c38qgq4nlsic1i4clmrr3b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654007353588:android:6383fe96ccd9b31ad95ea1",
+        "android_client_info": {
+          "package_name": "ru.lansonz.dayquestion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654007353588-rbqd7iksau96lknj18ul3hka714p49mu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.lansonz.dayquestion",
+            "certificate_hash": "f64e3c990c7649e3eadcc08c1e2534d1f5ff8e0d"
+          }
+        },
+        {
+          "client_id": "654007353588-lfit9m0507c38qgq4nlsic1i4clmrr3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAon2N514ryRvcPJ6Pd-Ec4q2cOozU0M54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654007353588-lfit9m0507c38qgq4nlsic1i4clmrr3b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

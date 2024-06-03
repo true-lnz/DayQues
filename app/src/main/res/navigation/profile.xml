@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile"
+    app:startDestination="@+id/profileFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ru.lansonz.dayquestion.ui.fragment.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_profileEdit"
+            app:destination="@id/profileEdit"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileEdit"
+        android:name="ru.lansonz.dayquestion.ui.fragment.profile.ProfileEdit"
+        android:label="ProfileEdit"
+        tools:layout="@layout/fragment_profile_edit" />
+
+</navigation>

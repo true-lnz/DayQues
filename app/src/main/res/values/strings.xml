@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Вопрос Дня</string>
+    <string name="start">Начать</string>
+
+    <string name="stay_in_touch">Войдите, чтобы задавать свои вопросы или продолжите без регистрации</string>
+    <string name="welcome">Давайте начнем!</string>
+
+    <!--  Ошибки  -->
+    <string name="name_required_error">Введите имя пользователя.</string>
+    <string name="email_required_error">Введите Email.</string>
+    <string name="password_required_error">Придумайте пароль.</string>
+    <string name="malformed_email_error">Неверный формат электронной почты.</string>
+    <string name="short_password_error">Пароль должен содержать больше 6 символов.</string>
+    <string name="question_short_error">Ваш вопрос слишком короткий.</string>
+    <string name="question_long_error">Ваш вопрос слишком длинный.</string>
+    <string name="answer_short_error">Предложенный ответ короткий.</string>
+    <string name="answer_long_error">Предложенный ответ длинный.</string>
+    <string name="address_error">Неверный формат адреса.</string>
+    <string name="profile_done_warning">Завершите заполнение профиля</string>
+
+    <!--  Навигация  -->
+    <string name="item_home">Домой</string>
+    <string name="item_add">Добавить</string>
+    <string name="item_profile">Профиль</string>
+    <string name="item_settings">Настройки</string>
+    <string name="item_address">Адрес</string>
+    <string name="item_favorites">Подписки</string>
+    <string name="item_notifications">Уведомления</string>
+
+    <!--  Действия  -->
+    <string name="sign_in">Войти</string>
+    <string name="logout">Выйти</string>
+    <string name="edit">Редактировать</string>
+    <string name="skip">Пропустить</string>
+    <string name="save">Сохранить</string>
+    <string name="forward">Далее</string>
+    <string name="cancel">Отмена</string>
+
+    <!--  Авторизация  -->
+    <string name="auth">Авторизация</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="fullName">Ваше имя</string>
+    <string name="nameExample">Иванов Иван</string>
+    <string name="email">E-mail</string>
+    <string name="emailExample">ivanov@yandex.ru</string>
+    <string name="password">Пароль</string>
+    <string name="passwordDots">••••••••••••</string>
+    <string name="or">или</string>
+    <string name="google">Google</string>
+    <string name="vk">Вконтакте</string>
+    <string name="forgot_password">Забыли пароль?</string>
+
+    <string name="address_hint">Например, Москва, Россия</string>
+
+    <string name="select_image">Выбрать фото</string>
+    <string name="photo_choose">Выберите фото профиля</string>
+    <string name="address">Местоположение</string>
+    <string name="done">Завершить</string>
+
+    <string name="answered">Отвечено</string>
+    <string name="not_answered">Не отвечено</string>
+    <string name="default_web_client_id" />
+
+    <string-array name="question_types">
+        <item>Обычный вопрос</item>
+        <item>Другой тип вопроса</item>
+    </string-array>
+
+    <string name="welcome_message">Привет, %1$s</string>
+    <string name="notifications">Уведомления</string>
+    <string name="profile">Профиль</string>
+
+    <integer name="com_vk_sdk_AppId">51937074</integer>
+
+    <string name="answer_text">%1$s - %2$d%%</string>
+
+</resources>

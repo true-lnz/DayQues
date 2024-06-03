@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="user"
+            type="ru.lansonz.dayquestion.model.UserModel" />
+        <variable
+            name="profileViewModel"
+            type="ru.lansonz.dayquestion.ui.fragment.profile.ProfileViewModel" />
+    </data>
+
+    <!-- New section for editing profile details -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/editProfileSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/questionTypeToggleGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_choice_1"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Личные данные"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:cornerRadius="12dp"
+                app:iconSize="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_choice_2"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Аккаунт"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:cornerRadius="12dp"
+                app:iconSize="16dp" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <TextView
+            android:id="@+id/tvFullName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/fullName"
+            android:textColor="@color/subTextColor"
+            app:layout_constraintEnd_toEndOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintStart_toStartOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintTop_toBottomOf="@+id/questionTypeToggleGroup" />
+
+        <EditText
+            android:id="@+id/etFullName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_none"
+            android:hint="@string/nameExample"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"
+            android:paddingVertical="4dp"
+            android:text="@={user.fullName}"
+            android:textColor="@color/mainTextColor"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintStart_toStartOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/email"
+            android:textColor="@color/subTextColor"
+            app:layout_constraintEnd_toEndOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintStart_toStartOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintTop_toBottomOf="@+id/etFullName" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_none"
+            android:hint="@string/emailExample"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:paddingVertical="4dp"
+            android:text="@={user.email}"
+            android:textColor="@color/mainTextColor"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintStart_toStartOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/address"
+            android:textColor="@color/subTextColor"
+            app:layout_constraintEnd_toEndOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintStart_toStartOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_none"
+            android:hint="@string/address_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textPostalAddress"
+            android:paddingVertical="4dp"
+            android:text="@={user.address}"
+            android:textColor="@color/mainTextColor"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintStart_toStartOf="@+id/questionTypeToggleGroup"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddress" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="50dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/tab_bottom_sheet" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="32dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            app:cornerRadius="1500dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/etAddress"
+            app:layout_constraintStart_toStartOf="@+id/etAddress"
+            app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
