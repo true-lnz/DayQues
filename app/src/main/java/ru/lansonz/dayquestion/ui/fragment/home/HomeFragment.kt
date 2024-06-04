@@ -18,6 +18,7 @@ import ru.lansonz.dayquestion.R
 import ru.lansonz.dayquestion.adapter.QuestionAdapter
 import ru.lansonz.dayquestion.ui.activity.question.QuestionViewModel
 import ru.lansonz.dayquestion.databinding.FragmentHomeBinding
+import ru.lansonz.dayquestion.decoration.RecyclerViewDecoration
 import ru.lansonz.dayquestion.ui.activity.question.ViewModelFactory
 import ru.lansonz.dayquestion.utils.MyApplication
 
@@ -51,12 +52,14 @@ class HomeFragment : Fragment() {
         val adapter = QuestionAdapter(emptyList())
         binding.questionsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.questionsRecyclerView.adapter = adapter
+        binding.questionsRecyclerView.addItemDecoration(RecyclerViewDecoration(32))
 
-        // Загружаем кэшированные вопросы
+        questionViewModel.clearCachedQuestions()
+/*        // Загружаем кэшированные вопросы
         questionViewModel.loadCachedQuestions()
 
         // Получаем вопросы для пользователя и сохраняем их в кэш
-        questionViewModel.getQuestions(mAuth.currentUser!!.uid)
+        questionViewModel.getQuestions(mAuth.currentUser!!.uid)*/
 
         // Наблюдаем за изменениями в списке кэшированных вопросов и новых вопросов пользователя
         questionViewModel.cachedQuestions.observe(viewLifecycleOwner, Observer { questions ->

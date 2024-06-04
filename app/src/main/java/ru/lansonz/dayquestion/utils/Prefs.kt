@@ -84,6 +84,16 @@ class Prefs private constructor(context: Context) {
         return json?.let { UserModel.fromJson(it) }
     }
 
+    // Метод для очистки вопросов
+    fun clearQuestions() {
+        mPrefs.edit().remove(QUESTIONS).apply()
+    }
+
+    // Метод для очистки всех данных
+    fun clearAll() {
+        mPrefs.edit().clear().apply()
+    }
+
     companion object {
         private const val PREFS_NAME = "my_prefs"
         private const val USER = "user"

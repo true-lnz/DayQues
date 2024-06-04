@@ -4,27 +4,32 @@ import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.gfg.article.customloadingbutton.LoadingButton
 import ru.lansonz.dayquestion.R
 import ru.lansonz.dayquestion.databinding.ActivityQuestionBinding
+import ru.lansonz.dayquestion.databinding.ButtonAnswerBinding
+import ru.lansonz.dayquestion.model.QuestionModel
 import ru.lansonz.dayquestion.utils.MyApplication
 
 
 class QuestionActivity : AppCompatActivity() {
     private lateinit var questionViewModel: QuestionViewModel
     private lateinit var binding: ActivityQuestionBinding
-
-    private lateinit var loadingButton: LoadingButton
+    private lateinit var q: MutableLiveData<QuestionModel?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +38,10 @@ class QuestionActivity : AppCompatActivity() {
 
         questionViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance()).get(QuestionViewModel::class.java)
 
-        // Устанавливаем ViewModel и пользователя в binding
         binding.questionViewModel = questionViewModel
         binding.user = MyApplication.currentUser
         binding.lifecycleOwner = this
 
-        // Устанавливаем полноэкранный режим
         hideSystemUI()
 
         val bg: ConstraintLayout  = findViewById(R.id.gradient_bg)
@@ -47,20 +50,54 @@ class QuestionActivity : AppCompatActivity() {
         animDrawable.setExitFadeDuration(3000)
         animDrawable.start()
 
-        questionViewModel.selectedQuestion.observe(this, Observer { question ->
+        q = questionViewModel.selectedQuestion
+
+        q.observe(this, Observer { question ->
             question?.let {
                 binding.questionText.text = it.text ?: "Ошибка получения вопроса"
+                addAnswerButtons(it)
             }
         })
+    }
 
-        loadingButton = findViewById(R.id.custom_button1)
+    private fun addAnswerButtons(question: QuestionModel) {
+        val answersContainer: LinearLayout = findViewById(R.id.answersContainer)
+        answersContainer.removeAllViews()
 
-        var complete = false
+        val inflater = LayoutInflater.from(this)
+        val totalAnswers = question.answers.sumOf { it.ans_count }
 
-        loadingButton.setOnClickListener {
-            Toast.makeText(this,"File is downloading",Toast.LENGTH_LONG).show()
-            loadingButton.hasCompletedDownload()
+        for ((index, answer) in question.answers.withIndex()) {
+            val buttonBinding: ButtonAnswerBinding = DataBindingUtil.inflate(
+                inflater, R.layout.button_answer, answersContainer, false)
+            buttonBinding.answer = answer
+            buttonBinding.progressPercentage = if (totalAnswers > 0) {
+                answer.ans_count.toFloat() / totalAnswers
+            } else { 1.0f }
+            buttonBinding.root.tag = index // Установите индекс как тег
+            answersContainer.addView(buttonBinding.root)
+        }
+    }
 
+    var clicked = false
+    fun onAnswerButtonClick(view: View) {
+        if (view is LoadingButton) {
+            if (clicked) return
+            clicked = true
+
+            val ansIndex = view.tag as Int
+            view.progressColor = ContextCompat.getColor(this, R.color.colorAccent)
+            view.rightText = (view.rightText.toInt() + 1).toString()
+            questionViewModel.saveQuestionToHistory(q.value!!, MyApplication.currentUser!!.userID, ansIndex)
+
+            // Запускаем анимации для остальных кнопок
+            val answersContainer: LinearLayout = findViewById(R.id.answersContainer)
+            for (i in 0 until answersContainer.childCount) {
+                val child = answersContainer.getChildAt(i)
+                if (child is LoadingButton && child != view) {
+                    child.startAnimation() // Предполагается, что у вас есть метод для запуска анимации на вашей кнопке
+                }
+            }
         }
     }
 

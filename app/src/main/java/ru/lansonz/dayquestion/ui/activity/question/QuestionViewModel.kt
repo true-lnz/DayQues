@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
+import ru.lansonz.dayquestion.model.AnswerModel
 import ru.lansonz.dayquestion.model.QuestionModel
 import ru.lansonz.dayquestion.utils.MyApplication
 import ru.lansonz.dayquestion.utils.Prefs
@@ -36,21 +37,20 @@ class QuestionViewModel() : ViewModel() {
     )
 
     // Функция для создания вопроса и ответов к нему
-// Функция для создания вопроса и ответов к нему
     fun createQuestionAndAnswers(userID: String?, question: String?, answers: List<String?>): String {
         val questionRef = database.reference.child("questions").push()
+        val answerModels = answers.map { AnswerModel(text = it ?: "") }
         val questionData = hashMapOf(
             "questionID" to questionRef.key,
             "question" to question,
             "authorID" to userID,
             "timestamp" to ServerValue.TIMESTAMP,
-            "answers" to answers
+            "answers" to answerModels
         )
 
         questionRef.setValue(questionData)
             .addOnSuccessListener {
                 Log.d("RealtimeDatabase", "Question and answers successfully added!")
-                // Создание документа в questions_stat
                 createQuestionStat(questionRef.key)
             }
             .addOnFailureListener { e ->
@@ -81,21 +81,12 @@ class QuestionViewModel() : ViewModel() {
             }
     }
 
-    // Пример использования функции создания вопроса
-    fun exampleUsage() {
-        val userID = "exampleUserID"
-        val question = "What is your favorite color?"
-        val answers = listOf("Red", "Blue", "Green", "Other")
-
-        val questionID = createQuestionAndAnswers(userID, question, answers)
-        Log.d("ExampleUsage", "Created question with ID: $questionID")
-    }
-
     // Функция для сохранения вопроса в истории
-    fun saveQuestionToHistory(questionID: String, userID: String, answered: Boolean) {
+    fun saveQuestionToHistory(q: QuestionModel, userID: String, ans_index: Int = 0) {
+        var answered = ans_index!=0
         val historyRef = database.reference.child("user_history").push()
         val questionHistoryData = hashMapOf(
-            "questionID" to questionID,
+            "questionID" to q.id,
             "userID" to userID,
             "answered" to answered,
             "timestamp" to ServerValue.TIMESTAMP
@@ -104,6 +95,7 @@ class QuestionViewModel() : ViewModel() {
         historyRef.setValue(questionHistoryData)
             .addOnSuccessListener {
                 Log.d("RealtimeDatabase", "Question successfully saved to history!")
+                incrementQuestionAndAnswerCount(q, ans_index)
             }
             .addOnFailureListener { e ->
                 Log.e("RealtimeDatabase", "Error saving question to history: $e")
@@ -111,38 +103,40 @@ class QuestionViewModel() : ViewModel() {
     }
 
     // Функция для увеличения счётчика вопросов
-    fun incrementQuestionCount(questionID: String) {
-        val statRef = database.reference.child("questions_stat").child(questionID)
+    fun incrementQuestionAndAnswerCount(question: QuestionModel, ansIndex: Int) {
+        val questionRef = database.reference.child("questions").child(question.id)
 
-        statRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        questionRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    statRef.child("ques_count").setValue((snapshot.child("ques_count").value as Long) + 1)
+                    // Получаем текущее значение ans_count для конкретного ответа
+                    val currentAnswers = snapshot.child("answers").children.map {
+                        it.getValue(AnswerModel::class.java) ?: AnswerModel()
+                    }
+
+                    val updatedAnswers = currentAnswers.mapIndexed { index, answer ->
+                        if (index == ansIndex) {
+                            answer.copy(ans_count = answer.ans_count + 1)
+                        } else {
+                            answer
+                        }
+                    }
+
+                    // Обновляем вопрос с увеличенным ans_count
+                    questionRef.child("answers").setValue(updatedAnswers)
                         .addOnSuccessListener {
-                            Log.d("RealtimeDatabase", "Question count incremented successfully for question ID: $questionID")
+                            Log.d("RealtimeDatabase", "Answer count incremented successfully for answer index: $ansIndex")
                         }
                         .addOnFailureListener { e ->
-                            Log.e("RealtimeDatabase", "Error incrementing question count for question ID $questionID: $e")
+                            Log.e("RealtimeDatabase", "Error incrementing answer count for answer index $ansIndex: $e")
                         }
                 } else {
-                    val newData = hashMapOf(
-                        "questionID" to questionID,
-                        "ques_count" to 1,
-                        "ans_count" to 0,
-                        "coef" to 0.0
-                    )
-                    statRef.setValue(newData)
-                        .addOnSuccessListener {
-                            Log.d("RealtimeDatabase", "New document created for question ID: $questionID")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("RealtimeDatabase", "Error creating new document for question ID $questionID: $e")
-                        }
+                    Log.e("RealtimeDatabase", "Question not found for ID: ${question.id}")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("RealtimeDatabase", "Error checking existence of document for question ID $questionID: $error")
+                Log.e("RealtimeDatabase", "Error accessing question for ID ${question.id}: $error")
             }
         })
     }
@@ -207,27 +201,48 @@ class QuestionViewModel() : ViewModel() {
     private fun fetchQuestion(questionStat: QuestionStat) {
         Log.d("QuestionRepository", "Fetching question details for questionId: ${questionStat.questionId}")
 
-        database.reference.child("questions").child(questionStat.questionId).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val question = snapshot.getValue(QuestionModel::class.java)?.copy(
-                    id = snapshot.child("questionID").getValue(String::class.java),
-                    text = snapshot.child("question").getValue(String::class.java),
-                    answers = snapshot.child("answers").children.mapNotNull { it.getValue(String::class.java) },
-                    ques_count = questionStat.quesCount,
-                    ans_count = questionStat.ansCount,
-                    coef = questionStat.coef,
-                    authorID = snapshot.child("authorID").getValue(String::class.java),
-                    timestamp = snapshot.child("timestamp").getValue(Long::class.java)
-                )
-                Log.d("QuestionRepository", "Fetched question details: $question")
-                _selectedQuestion.value = question
-            }
+        database.reference.child("questions").child(questionStat.questionId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        Log.d("QuestionRepository", "DataSnapshot exists: ${snapshot.value}")
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("QuestionRepository", "Error fetching question details: ${error.message}")
-            }
-        })
+                        val answers = snapshot.child("answers").children.mapNotNull {
+                            it.getValue(AnswerModel::class.java)
+                        }
+
+                        val questionID = snapshot.child("questionID").getValue(String::class.java)
+                        val text = snapshot.child("question").getValue(String::class.java)
+                        val authorID = snapshot.child("authorID").getValue(String::class.java)
+                        val timestamp = snapshot.child("timestamp").getValue(Long::class.java)
+
+                        if (questionID != null && text != null && authorID != null && timestamp != null) {
+                            val question = QuestionModel(
+                                id = questionID,
+                                text = text,
+                                answers = answers,
+                                ques_count = questionStat.quesCount,
+                                ans_count = questionStat.ansCount,
+                                coef = questionStat.coef,
+                                authorID = authorID,
+                                timestamp = timestamp
+                            )
+                            Log.d("QuestionRepository", "Fetched question details: $question")
+                            _selectedQuestion.value = question
+                        } else {
+                            Log.e("QuestionRepository", "One or more fields are null")
+                        }
+                    } else {
+                        Log.e("QuestionRepository", "DataSnapshot does not exist")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("QuestionRepository", "Error fetching question details: ${error.message}")
+                }
+            })
     }
+
 
     // Функция для получения вопросов и сохранения их в SharedPreferences
     fun getQuestions(userID: String) {
@@ -235,24 +250,25 @@ class QuestionViewModel() : ViewModel() {
 
         userHistoryRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(historySnapshot: DataSnapshot) {
-                // Логируем все вопросы, найденные в истории пользователя
                 for (snapshot in historySnapshot.children) {
                     val questionID = snapshot.child("questionID").value as String
                     val isAnswered = snapshot.child("answered").value as Boolean
                     Log.d("RealtimeDatabase", "Question found in user history - Question ID: $questionID, Answered: $isAnswered")
 
-                    // Получаем содержание вопроса из базы данных
                     val questionRef = database.reference.child("questions").child(questionID)
                     questionRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(questionSnapshot: DataSnapshot) {
-                            val questionModel = questionSnapshot.getValue(QuestionModel::class.java)
+                            val answers = questionSnapshot.child("answers").children.mapNotNull {
+                                it.getValue(AnswerModel::class.java)
+                            }
+                            val questionModel = questionSnapshot.getValue(QuestionModel::class.java)?.copy(
+                                answers = answers
+                            )
                             if (questionModel != null) {
                                 Log.d("RealtimeDatabase", "Question fetched - ID: ${questionModel.id}, Text: ${questionModel.text}")
 
-                                // Обновляем модель вопроса
                                 questionModel.isAnswered = isAnswered
 
-                                // Добавляем вопрос в список вопросов и сохраняем в SharedPreferences
                                 val updatedQuestions = _cachedQuestions.value?.toMutableList() ?: mutableListOf()
                                 updatedQuestions.add(questionModel)
                                 prefs.saveQuestions(updatedQuestions)
@@ -281,6 +297,11 @@ class QuestionViewModel() : ViewModel() {
             val sortedQuestions = questions.sortedByDescending { it.timestamp }
             _cachedQuestions.postValue(sortedQuestions)
         }
+    }
+
+    fun clearCachedQuestions() {
+        _cachedQuestions.value = emptyList()
+        prefs.clearQuestions()
     }
 
     companion object {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="answer"
+            type="ru.lansonz.dayquestion.model.AnswerModel" />
+        <variable
+            name="progressPercentage"
+            type="Float" />
+    </data>
+
+    <com.gfg.article.customloadingbutton.LoadingButton
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="5dp"
+        app:bgColor="@color/subBgColor"
+        app:buttonText="@{answer.text}"
+        app:cornerRadius="16dp"
+        android:onClick="onAnswerButtonClick"
+        app:progressColor="#eee"
+        app:progressMax="100"
+        app:setProgressPercentage="@{progressPercentage}"
+        app:rightText="@{Integer.toString(answer.ans_count)}"
+        app:rightTextColor="@color/mainTextColor"
+        app:textColor="@color/mainTextColor"
+        app:textSize="14sp" />
+</layout>

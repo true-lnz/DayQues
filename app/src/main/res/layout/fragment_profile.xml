@@ -24,7 +24,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/navHeader"
                 android:layout_width="match_parent"
-                android:layout_height="380dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/rounded_toolbar"
                 android:elevation="1dp"
                 android:padding="16dp"
@@ -66,7 +66,7 @@
                     android:layout_marginTop="16dp"
                     android:text="@{user.fullName}"
                     android:textAlignment="center"
-                    android:textColor="@color/mainBgColor"
+                    android:textColor="@color/subBgColor"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/profileImage"
@@ -110,8 +110,8 @@
                     android:id="@+id/btnEdit"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp"
                     android:text="@string/edit"
@@ -123,6 +123,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/emailTV"
                     app:layout_constraintStart_toStartOf="@+id/emailTV"
+                    app:layout_constraintTop_toBottomOf="@+id/statsBlock"
                     app:rippleColor="@color/whiteTextColor" />
 
 
@@ -142,6 +143,57 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:rippleColor="@color/whiteTextColor" />
+
+                <LinearLayout
+                    android:id="@+id/statsBlock"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/emailTV"
+                    app:layout_constraintStart_toStartOf="@+id/emailTV"
+                    app:layout_constraintTop_toBottomOf="@+id/addressTV">
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Очков"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#0090ff" />
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Вопросов"
+                        android:textAlignment="center"
+                        android:textColor="@color/whiteTextColor" />
+
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#0090ff" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Ответов"
+                        android:textAlignment="center"
+                        android:textColor="@color/whiteTextColor" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -16,20 +16,23 @@ class LoadingButton @JvmOverloads constructor(
 
     private var bgColor: Int
     private var textColor: Int
-    private var progressColor: Int
+    var progressColor: Int
     private var textSize: Float
     private var cornerRadius: Float
     private var progressMax: Int
+    private var buttonTextValue: String
+    private var rightTextValue: String
+    private var rightTextColorValue: Int
+    private var progressPercentage: Float
 
-    @Volatile
-    private var progress: Double = 0.0
     private var valueAnimator: ValueAnimator
 
     private var buttonState: ButtonState by Delegates.observable(ButtonState.Completed) { _, _, _ ->
+        invalidate()
+        requestLayout()
     }
 
     private val updateListener = ValueAnimator.AnimatorUpdateListener {
-        progress = (it.animatedValue as Float).toDouble()
         invalidate()
         requestLayout()
     }
@@ -82,6 +85,20 @@ class LoadingButton @JvmOverloads constructor(
                 R.styleable.LoadingButton_progressMax,
                 100
             )
+            buttonTextValue = attr.getString(
+                R.styleable.LoadingButton_buttonText
+            ) ?: context.getString(R.string.error)
+            rightTextValue = attr.getString(
+                R.styleable.LoadingButton_rightText
+            ) ?: ""
+            rightTextColorValue = attr.getColor(
+                R.styleable.LoadingButton_rightTextColor,
+                ContextCompat.getColor(context, R.color.whiteTextColor)
+            )
+            progressPercentage = attr.getFloat(
+                R.styleable.LoadingButton_progressPercentage,
+                1.0f // Default value is 1.0 (100%)
+            )
         } finally {
             attr.recycle()
         }
@@ -90,22 +107,61 @@ class LoadingButton @JvmOverloads constructor(
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
             this.textSize = this@LoadingButton.textSize
-            typeface = Typeface.create("", Typeface.BOLD)
+            typeface = Typeface.create("", Typeface.NORMAL)
         }
 
         setLayerType(LAYER_TYPE_SOFTWARE, paint)
     }
 
+    var buttonText: String
+        get() = buttonTextValue
+        set(value) {
+            buttonTextValue = value
+            invalidate()
+            requestLayout()
+        }
+
+    var rightText: String
+        get() = rightTextValue
+        set(value) {
+            rightTextValue = value
+            invalidate()
+            requestLayout()
+        }
+
+    var rightTextColor: Int
+        get() = rightTextColorValue
+        set(value) {
+            rightTextColorValue = value
+            invalidate()
+            requestLayout()
+        }
+
+    var progressPercentageValue: Float
+        get() = progressPercentage
+        set(value) {
+            progressPercentage = value
+            invalidate()
+            requestLayout()
+        }
+
     override fun performClick(): Boolean {
         super.performClick()
-        if (buttonState == ButtonState.Completed) buttonState = ButtonState.Loading
-        animation()
+        if (buttonState == ButtonState.Completed) startLoading()
 
         return true
     }
 
-    private fun animation() {
+    private fun startLoading() {
+        buttonState = ButtonState.Loading
+        valueAnimator.setFloatValues(0f, progressPercentage)
         valueAnimator.start()
+    }
+
+    fun startAnimation() {
+        if (buttonState != ButtonState.Loading) {
+            startLoading()
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -116,20 +172,43 @@ class LoadingButton @JvmOverloads constructor(
         val rectF = RectF(0f, 0f, width.toFloat(), height.toFloat())
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, paint)
 
+        val fontMetrics = paint.fontMetrics
+        val textHeight = fontMetrics.descent - fontMetrics.ascent
+        val verticalTextOffset = (height - textHeight) / 2 - fontMetrics.ascent
+
         if (buttonState == ButtonState.Loading) {
             paint.color = progressColor
+            val progressFraction = (valueAnimator.animatedValue as Float).coerceAtMost(progressPercentage)
+            val progressWidth = width * progressFraction
+
+            // Сохранить состояние канвы
+            canvas.save()
+
+            // Ограничить область рисования полосы загрузки
+            canvas.clipRect(0f, 0f, progressWidth, height.toFloat())
+
+            // Нарисовать полосу загрузки
             canvas.drawRoundRect(
                 0f, 0f,
-                (width * (progress / progressMax)).toFloat(), height.toFloat(),
+                width.toFloat(), height.toFloat(),
                 cornerRadius, cornerRadius, paint
             )
+
+            // Восстановить состояние канвы
+            canvas.restore()
         }
 
-        val buttonText = if (buttonState == ButtonState.Loading)
-            resources.getString(R.string.auth)
-        else resources.getString(R.string.cancel)
-
+        // Нарисовать текст слева
         paint.color = textColor
-        canvas.drawText(buttonText, (width / 2).toFloat(), ((height + 30) / 2).toFloat(), paint)
+        paint.textAlign = Paint.Align.LEFT
+        canvas.drawText(buttonTextValue, 30f, verticalTextOffset, paint)
+
+        // Нарисовать текст справа при загрузке
+        if (buttonState == ButtonState.Loading) {
+            paint.color = rightTextColorValue
+            paint.textAlign = Paint.Align.RIGHT
+            canvas.drawText(rightTextValue, (width - 30).toFloat(), verticalTextOffset, paint)
+        }
     }
+
 }

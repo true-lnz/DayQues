@@ -1,8 +1,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_insetEdge="bottom">
 
     <data>
+
         <variable
             name="questionViewModel"
             type="ru.lansonz.dayquestion.ui.activity.question.QuestionViewModel" />
@@ -12,131 +14,339 @@
             type="ru.lansonz.dayquestion.model.UserModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/mainBgColor"
-        tools:context=".ui.fragment.home.HomeFragment">
+        android:background="@color/mainBgColor">
 
-        <!-- Приветственное сообщение и фото профиля -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/headerLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/mainBgColor"
+            tools:context=".ui.fragment.home.HomeFragment">
 
+            <!-- Приветственное сообщение и фото профиля -->
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profileImageView"
-                setImage="@{user.profilePictureURL}"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/placeholder"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/welcomeTextView"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/headerLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/mainTextColor"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:getWelcomeWord="@{user.fullName}"
-                app:layout_constraintBottom_toTopOf="@+id/textView3"
-                app:layout_constraintEnd_toStartOf="@+id/profileImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="0dp"
-                android:layout_height="19dp"
-                android:text="Рады видеть тебя снова!"
-                android:textColor="@color/subTextColor"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/welcomeTextView"
-                app:layout_constraintStart_toStartOf="@+id/welcomeTextView"
-                app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Блок с рейтингом и количеством очков -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/statsLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/btn_background"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerLayout">
-
-            <TextView
-                android:id="@+id/pointsTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_star"
-                android:drawableTint="@color/colorAccent"
-                android:text="2300 Exp. Points"
-                android:textColor="@color/mainTextColor"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@id/rankingTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/rankingTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_star"
-                android:drawableTint="@color/colorAccent"
-                android:text="32 Ranking"
-                android:textColor="@color/mainTextColor"
-                android:textSize="16sp"
+                android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/pointsTextView"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/btn_ques"
-                android:layout_width="wrap_content"
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImageView"
+                    setImage="@{user.profilePictureURL}"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:elevation="2dp"
+                    android:padding="3dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/welcomeTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Привет, Name"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:getWelcomeWord="@{user.fullName}"
+                    app:layout_constraintBottom_toTopOf="@+id/textView3"
+                    app:layout_constraintEnd_toStartOf="@+id/profileImageView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="19dp"
+                    android:text="Рады видеть тебя снова!"
+                    android:textColor="@color/subTextColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/welcomeTextView"
+                    app:layout_constraintStart_toStartOf="@+id/welcomeTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/statsLayout"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/btn_background"
+                android:elevation="2dp"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="100dp"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerLayout">
+
+                <LinearLayout
+                    android:id="@+id/pointsBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|center_horizontal"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/pointsPicture"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right|center_horizontal|center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/ic_points"
+                        app:backgroundTint="@color/colorPrimary" />
+
+                    <LinearLayout
+                        android:id="@+id/textBlock1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/pointsTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="100"
+                            android:textColor="@color/mainTextColor"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/pointsDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="Баллов" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/rankBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/rankPicture"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/ic_rating"
+                        app:backgroundTint="@color/colorPrimary" />
+
+                    <LinearLayout
+                        android:id="@+id/textBlock2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/rankingTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="32"
+                            android:textColor="@color/mainTextColor"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/rankDesc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Рейтинг" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Вопрос дня"
+                android:drawableStart="@drawable/ic_help"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/subTextColor"
+                android:text="Ваш вопрос дня"
+                android:textColor="@color/subTextColor"
+                app:layout_constraintEnd_toEndOf="@+id/statsLayout"
+                app:layout_constraintStart_toStartOf="@+id/statsLayout"
+                app:layout_constraintTop_toBottomOf="@+id/statsLayout" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dayQuesLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="3dp"
+                android:padding="16dp"
+                app:cardCornerRadius="25dp"
+                app:layout_constraintEnd_toEndOf="@+id/textView14"
+                app:layout_constraintStart_toStartOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+                <Button
+                    android:id="@+id/btn_ques"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Вперед!"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_button_selector" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- RecyclerView для вопросов -->
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:drawableStart="@drawable/ic_history"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/subTextColor"
+                android:text="История вопросов"
+                android:textColor="@color/subTextColor"
+                app:layout_constraintEnd_toEndOf="@+id/statsLayout"
+                app:layout_constraintStart_toStartOf="@+id/statsLayout"
+                app:layout_constraintTop_toBottomOf="@+id/dayQuesLayout" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/questionsRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/mainBgColor"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pointsTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/divider4"
+                tools:listitem="@layout/item_question"
+                tools:visibility="gone" />
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="?android:attr/listDivider"
+                android:elevation="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/divider4"
+                app:layout_constraintStart_toStartOf="@+id/divider4"
+                app:layout_constraintTop_toBottomOf="@+id/divider4">
+
+                <TextView
+                    android:id="@+id/tvQuickStart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:drawableStart="@drawable/ic_quickstart"
+                    android:drawablePadding="5dp"
+                    android:drawableTint="@color/subTextColor"
+                    android:text="Что дальше?"
+                    android:textColor="@color/subTextColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Заходите в приложение каждый день, тогда тут будет не так пусто :)"
+                    android:textColor="#dcdcdc"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Узнайте новое и вдохновляющее, просматривая вопросы других пользователей!"
+                    app:layout_constraintEnd_toEndOf="@+id/textView17"
+                    app:layout_constraintStart_toStartOf="@+id/textView17"
+                    app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+                <Button
+                    android:id="@+id/btn_favorites"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Ознакомиться"
+                    android:textAllCaps="false"
+                    app:cornerRadius="1500dp"
+                    app:layout_constraintEnd_toEndOf="@+id/textView19"
+                    app:layout_constraintStart_toStartOf="@+id/textView19"
+                    app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_width="361dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvQuickStart" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-        <!-- RecyclerView для вопросов -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/questionsRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/statsLayout"
-            tools:listitem="@layout/item_question" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

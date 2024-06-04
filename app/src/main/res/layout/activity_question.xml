@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -19,11 +18,13 @@
         android:background="@drawable/ques_gradient_list"
         android:id="@+id/gradient_bg">
 
+        <!-- Оставляем существующие элементы -->
+
         <TextView
             android:id="@+id/questionNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="100dp"
             android:text="@string/app_name"
             android:textColor="#FFFFFF"
@@ -40,10 +41,9 @@
             android:drawableStart="@drawable/ic_views"
             android:drawablePadding="8dp"
             android:drawableTint="@android:color/white"
-            android:text="12.8K"
-            app:formattedNumber="@{questionViewModel.selectedQuestion != null ? questionViewModel.selectedQuestion.ques_count : 0}"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
+            app:formattedNumber="@{questionViewModel.selectedQuestion.ques_count}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,7 +55,6 @@
             android:layout_marginBottom="16dp"
             android:drawableEnd="@drawable/ic_chat_show"
             android:drawablePadding="8dp"
-            android:drawableTint="@android:color/white"
             android:text="Комментарии"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
@@ -78,10 +77,9 @@
             android:id="@+id/questionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
-            android:text="Какое было название у Санкт-Петербурга с 1924 до 1991 год?"
+            android:layout_marginEnd="24dp"
             android:textAllCaps="false"
             android:textColor="@color/whiteTextColor"
             android:textSize="34sp"
@@ -90,61 +88,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/questionNumber" />
 
-        <RadioGroup
-            android:id="@+id/answersGroup"
+        <!-- Динамический контейнер для кнопок -->
+        <LinearLayout
+            android:id="@+id/answersContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:orientation="vertical"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/questionText">
-
-            <com.gfg.article.customloadingbutton.LoadingButton
-                android:id="@+id/custom_button1"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                app:cornerRadius="16dp"
-                app:shadowRadius="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:textColor="@color/whiteTextColor" />
-
-            <com.gfg.article.customloadingbutton.LoadingButton
-                android:id="@+id/custom_button2"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:textColor="@color/whiteTextColor" />
-
-            <com.gfg.article.customloadingbutton.LoadingButton
-                android:id="@+id/custom_button3"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:textColor="@color/whiteTextColor" />
-        </RadioGroup>
+            app:layout_constraintTop_toBottomOf="@id/questionText" />
 
         <ListView
             android:id="@+id/chatList"
@@ -158,7 +113,7 @@
             app:layout_constraintBottom_toTopOf="@id/inputLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/answersGroup" />
+            app:layout_constraintTop_toBottomOf="@+id/answersContainer" />
 
         <LinearLayout
             android:id="@+id/inputLayout"
@@ -186,6 +141,17 @@
                 android:text="Отправить"
                 android:textAllCaps="false" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Нарушает правила?"
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

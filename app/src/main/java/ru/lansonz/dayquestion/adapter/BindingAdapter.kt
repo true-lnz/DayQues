@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.gfg.article.customloadingbutton.LoadingButton
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -97,6 +98,11 @@ fun setFormattedNumber(textView: TextView, number: Int) {
         number.toString()
     }
     textView.text = formattedNumber
+}
+
+@BindingAdapter("setProgressPercentage")
+fun setProgressPercentage(view: LoadingButton, progress: Float) {
+    view.progressPercentageValue = progress
 }
 
 @BindingAdapter("getWelcomeWord")
