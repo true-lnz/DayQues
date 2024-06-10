@@ -1,4 +1,3 @@
-<!-- item_question.xml -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -12,15 +11,20 @@
             type="ru.lansonz.dayquestion.adapter.BindingAdapterKt" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="2dp"
+        android:clickable="true"
+        android:elevation="3dp"
+        android:longClickable="true"
         android:padding="16dp"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:cardCornerRadius="25dp"
-        app:cardElevation="2dp">
+        app:rippleColor="@color/cardview_riple_color2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -69,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="77 баллов"
+                android:text='77 баллов'
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -77,25 +81,6 @@
                 app:layout_constraintStart_toStartOf="@+id/questionTextView"
                 app:layout_constraintTop_toBottomOf="@+id/questionTextView" />
 
-            <!--        <TextView
-            android:id="@+id/pointsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text='@{String.valueOf(question.points) + " баллов"}'
-            android:textColor="@color/colorAccent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionTextView" />-->
-
-            <!--        <TextView
-            android:id="@+id/answersCountTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text='@{String.valueOf(question.answersCount) + " ответов"}'
-            android:textColor="@color/subTextColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionTextView" />-->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
+    </com.google.android.material.card.MaterialCardView>
 </layout>

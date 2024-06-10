@@ -24,6 +24,7 @@ import ru.lansonz.dayquestion.databinding.ActivityQuestionBinding
 import ru.lansonz.dayquestion.databinding.ButtonAnswerBinding
 import ru.lansonz.dayquestion.model.QuestionModel
 import ru.lansonz.dayquestion.utils.MyApplication
+import ru.lansonz.dayquestion.utils.Prefs
 
 
 class QuestionActivity : AppCompatActivity() {
@@ -46,7 +47,7 @@ class QuestionActivity : AppCompatActivity() {
 
         val bg: ConstraintLayout  = findViewById(R.id.gradient_bg)
         val animDrawable: AnimationDrawable= bg.background as AnimationDrawable
-        animDrawable.setEnterFadeDuration(1500)
+        animDrawable.setEnterFadeDuration(500)
         animDrawable.setExitFadeDuration(3000)
         animDrawable.start()
 
@@ -88,7 +89,10 @@ class QuestionActivity : AppCompatActivity() {
             val ansIndex = view.tag as Int
             view.progressColor = ContextCompat.getColor(this, R.color.colorAccent)
             view.rightText = (view.rightText.toInt() + 1).toString()
-            questionViewModel.saveQuestionToHistory(q.value!!, MyApplication.currentUser!!.userID, ansIndex)
+            if (!Prefs.getInstance(MyApplication.getInstance()).isNewUser) {
+                questionViewModel.saveQuestionToHistory(q.value!!, MyApplication.currentUser!!.userID, ansIndex)
+                Prefs.getInstance(MyApplication.getInstance()).saveQuestions(questionViewModel.cachedQuestions?.value!!)
+            }
 
             // Запускаем анимации для остальных кнопок
             val answersContainer: LinearLayout = findViewById(R.id.answersContainer)

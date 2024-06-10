@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -35,10 +39,11 @@
             <nav-graph android:value="@navigation/questions" />
             <nav-graph android:value="@navigation/notifications" />
             <nav-graph android:value="@navigation/favorites" />
-            <nav-graph android:value="@navigation/auth" />
             <nav-graph android:value="@navigation/dayques" />
-            <nav-graph android:value="@navigation/sign_up" />
         </activity>
+        <service
+            android:name=".NotificationWorker"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

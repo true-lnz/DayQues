@@ -45,19 +45,9 @@ class LoginFragment : Fragment() {
     private lateinit var authLauncher: ActivityResultLauncher<Collection<VKScope>>
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding.loginViewModel = viewModel
-        binding.lifecycleOwner = this
-
-        setupListeners() // listeners
-        setUpObservers() // To home activity
-
-        authLauncher = VK.login(activity as HostActivity) { result : VKAuthenticationResult ->
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+/*        authLauncher = VK.login(requireActivity()) { result : VKAuthenticationResult ->
             when (result) {
                 is VKAuthenticationResult.Success -> {
                     val vkId = result.token.userId
@@ -83,7 +73,21 @@ class LoginFragment : Fragment() {
                     viewModel._errorString.value = "Не удалось авторизоваться [3]"
                 }
             }
-        }
+        }*/
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding.loginViewModel = viewModel
+        binding.lifecycleOwner = this
+
+        setupListeners() // listeners
+        setUpObservers() // To home activity
+
+
 
         return binding.root
     }

@@ -11,6 +11,7 @@ import ru.lansonz.dayquestion.model.NotificationModel
 import ru.lansonz.dayquestion.utils.Prefs
 import ru.lansonz.dayquestion.databinding.FragmentNotificationBinding
 import ru.lansonz.dayquestion.decoration.RecyclerViewDecoration
+import ru.lansonz.dayquestion.utils.MyApplication
 
 class NotificationFragment : Fragment() {
     private lateinit var binding: FragmentNotificationBinding
@@ -42,16 +43,40 @@ class NotificationFragment : Fragment() {
             addItemDecoration(RecyclerViewDecoration(32))
         }
 
+        val currentUser = MyApplication.currentUser
 
-/*        val newNotifications = listOf(
-            NotificationModel("Roman Kamushken", "2 days ago", "Check out awesome updates for Android design kit for Figma. Now more screens and more categories.", "117 REPLAYS"),
-            NotificationModel("Tina Turbina", "18 minutes ago", "into component container and with resizing constraints set????", "117 REPLAYS"),
-            NotificationModel("Tomek Kuwalskij", "2 days ago", "into component container and with resizing constraints set????", "117 REPLAYS"),
-            NotificationModel("Roman Kamushken", "2 days ago", "Check out awesome updates for Android design kit for Figma. Now more screens and more categories.", "117 REPLAYS"),
-            NotificationModel("Tina Turbina", "18 minutes ago", "into component container and with resizing constraints set????", "117 REPLAYS"),
-            NotificationModel("Tomek Kuwalskij", "2 days ago", "into component container and with resizing constraints set????", "117 REPLAYS")
-        )
-        prefs.saveNotifications(newNotifications)*/
+        val newNotifications = if (currentUser?.fullName.isNullOrEmpty()) {
+            listOf(
+                NotificationModel("Вопрос Дня", "2 минуты назад", "Ваш сегодняшний Вопрос дня уже готов. Давайте посмотрим?", "Перейти"),
+                NotificationModel("Вопрос Дня", "2 минуты назад", "Добро пожаловать в наше комьюнити!", "Перейти"),
+                NotificationModel("Вопрос Дня", "3 минуты назад", "Вы вошли как гость!", "Перейти")
+            )
+        } else {
+            listOf(
+                NotificationModel("Вопрос Дня", "2 минуты назад", "Ваш сегодняшний Вопрос дня уже готов. Давайте посмотрим?", "Перейти"),
+                NotificationModel("Вопрос Дня", "10 минут назад", "Ваш вопрос был успешно опубликован для публичного просмотра", "Просмотр"),
+                NotificationModel("Вопрос Дня", "18 минут назад", "Завершите заполнения профиля: вы не заполнили еще социальные сети :", "Перейти"),
+                NotificationModel("Роман Финогентов", "2 дня назад", "У пользователя новый вопрос. Можно уже смотреть!", "Просмотр"),
+                NotificationModel("Вопрос Дня", "3 дня назад", "Ваш сегодняшний Вопрос дня уже готов. Давайте посмотрим?", "Перейти"),
+                NotificationModel("Алексей Кузнецов", "3 дня назад", "У пользователя новый вопрос. Можно уже смотреть!", "Просмотр"),
+                NotificationModel("Вопрос Дня", "4 минут назад", "Ваш вопрос был успешно опубликован для публичного просмотра", "Просмотр"),
+                NotificationModel("Анна Петрова", "4 дня назад", "У пользователя новый вопрос. Можно уже смотреть!", "Просмотр"),
+                NotificationModel("Вопрос Дня", "4 дня назад", "Ваш сегодняшний Вопрос дня уже готов. Давайте посмотрим?", "Перейти"),
+                NotificationModel("Вопрос Дня", "5 дней назад", "Добро пожаловать в наше комьюнити!", "Перейти"),
+            )
+        }
+
+        // Сохраняем уведомления
+        Prefs.getInstance(MyApplication.getInstance()).saveNotifications(newNotifications)
+
+        // Отправляем уведомления
+        newNotifications.forEach { notification ->
+            if (currentUser?.fullName.isNullOrEmpty())
+                NotificationUtils.sendNotification(requireContext(), notification.userName, notification.message)
+        }
+
+        NotificationUtils.sendNotification(requireContext(), newNotifications.get(0).userName, newNotifications.get(0).message)
+        NotificationUtils.sendNotification(requireContext(), newNotifications.get(2).userName, newNotifications.get(0).message)
 
         return binding.root
     }

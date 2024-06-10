@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import ru.lansonz.dayquestion.model.AnswerModel
 import ru.lansonz.dayquestion.model.QuestionModel
 import ru.lansonz.dayquestion.utils.MyApplication
@@ -26,8 +27,14 @@ class QuestionViewModel() : ViewModel() {
     private val _selectedQuestion = MutableLiveData<QuestionModel?>()
     val selectedQuestion: MutableLiveData<QuestionModel?> get() = _selectedQuestion
 
+    private val _currentQuestion = MutableLiveData<QuestionModel?>()
+    val currentQuestion: MutableLiveData<QuestionModel?> get() = _currentQuestion
+
     private val _cachedQuestions = MutableLiveData<List<QuestionModel>>()
     val cachedQuestions: LiveData<List<QuestionModel>> get() = _cachedQuestions
+
+    private val _cachedQuestions2 = MutableLiveData<List<QuestionModel>>()
+    val cachedQuestions2: LiveData<List<QuestionModel>> get() = _cachedQuestions2
 
     data class QuestionStat(
         val questionId: String,
@@ -36,19 +43,43 @@ class QuestionViewModel() : ViewModel() {
         val coef: Double
     )
 
+    fun setCurrentQuestion(q: QuestionModel) {
+        _currentQuestion.value = q
+    }
     // Функция для создания вопроса и ответов к нему
-    fun createQuestionAndAnswers(userID: String?, question: String?, answers: List<String?>): String {
+    fun createQuestionAndAnswers(userID: String?, question: String?, answers: List<String?>): QuestionModel {
+        // Получаем ссылку на новую запись вопроса
         val questionRef = database.reference.child("questions").push()
+
+        // Создаем список моделей ответов
         val answerModels = answers.map { AnswerModel(text = it ?: "") }
-        val questionData = hashMapOf(
-            "questionID" to questionRef.key,
-            "question" to question,
-            "authorID" to userID,
-            "timestamp" to ServerValue.TIMESTAMP,
-            "answers" to answerModels
+
+        // Создаем объект QuestionModel
+        val questionModel = QuestionModel(
+            id = questionRef.key ?: "",
+            text = question ?: "",
+            answers = answerModels,
+            authorID = userID ?: "",
+            timestamp = System.currentTimeMillis() // Локальное время, т.к. ServerValue.TIMESTAMP не совместим напрямую
         )
 
-        questionRef.setValue(questionData)
+        // Преобразование данных для Firebase
+        val questionMap = hashMapOf(
+            "id" to questionModel.id,
+            "text" to questionModel.text,
+            "authorID" to questionModel.authorID,
+            "timestamp" to ServerValue.TIMESTAMP,  // Используем ServerValue.TIMESTAMP для серверного времени
+            "answers" to answerModels.map { mapOf("text" to it.text, "ans_count" to it.ans_count) },
+            "ques_count" to questionModel.ques_count,
+            "ans_count" to questionModel.ans_count,
+            "coef" to questionModel.coef,
+            "isAnswered" to questionModel.isAnswered
+        )
+
+        setCurrentQuestion(questionModel)
+
+        // Сохраняем данные в Firebase
+        questionRef.setValue(questionMap)
             .addOnSuccessListener {
                 Log.d("RealtimeDatabase", "Question and answers successfully added!")
                 createQuestionStat(questionRef.key)
@@ -57,7 +88,8 @@ class QuestionViewModel() : ViewModel() {
                 Log.e("RealtimeDatabase", "Error adding question: $e")
             }
 
-        return questionRef.key ?: ""
+        // Возвращаем объект QuestionModel
+        return questionModel
     }
 
     // Функция для создания записи в questions_stat
@@ -199,18 +231,13 @@ class QuestionViewModel() : ViewModel() {
     }
 
     private fun fetchQuestion(questionStat: QuestionStat) {
-        Log.d("QuestionRepository", "Fetching question details for questionId: ${questionStat.questionId}")
-
         database.reference.child("questions").child(questionStat.questionId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        Log.d("QuestionRepository", "DataSnapshot exists: ${snapshot.value}")
-
                         val answers = snapshot.child("answers").children.mapNotNull {
                             it.getValue(AnswerModel::class.java)
                         }
-
                         val questionID = snapshot.child("questionID").getValue(String::class.java)
                         val text = snapshot.child("question").getValue(String::class.java)
                         val authorID = snapshot.child("authorID").getValue(String::class.java)
@@ -227,76 +254,141 @@ class QuestionViewModel() : ViewModel() {
                                 authorID = authorID,
                                 timestamp = timestamp
                             )
-                            Log.d("QuestionRepository", "Fetched question details: $question")
                             _selectedQuestion.value = question
-                        } else {
-                            Log.e("QuestionRepository", "One or more fields are null")
                         }
-                    } else {
-                        Log.e("QuestionRepository", "DataSnapshot does not exist")
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e("QuestionRepository", "Error fetching question details: ${error.message}")
                 }
             })
     }
 
-
     // Функция для получения вопросов и сохранения их в SharedPreferences
-    fun getQuestions(userID: String) {
-        val userHistoryRef = database.reference.child("user_history").orderByChild("userID").equalTo(userID)
+    fun getLastQuestions(userID: String) {
+        val userHistoryRef = database.reference
+            .child("user_history")
+            .orderByChild("timestamp")
+            .limitToLast(7)
 
         userHistoryRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(historySnapshot: DataSnapshot) {
-                for (snapshot in historySnapshot.children) {
-                    val questionID = snapshot.child("questionID").value as String
-                    val isAnswered = snapshot.child("answered").value as Boolean
-                    Log.d("RealtimeDatabase", "Question found in user history - Question ID: $questionID, Answered: $isAnswered")
+                if (historySnapshot.exists()) {
+                    val questionsList = mutableListOf<QuestionModel>()
 
-                    val questionRef = database.reference.child("questions").child(questionID)
-                    questionRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(questionSnapshot: DataSnapshot) {
-                            val answers = questionSnapshot.child("answers").children.mapNotNull {
-                                it.getValue(AnswerModel::class.java)
-                            }
-                            val questionModel = questionSnapshot.getValue(QuestionModel::class.java)?.copy(
-                                answers = answers
-                            )
-                            if (questionModel != null) {
-                                Log.d("RealtimeDatabase", "Question fetched - ID: ${questionModel.id}, Text: ${questionModel.text}")
+                    for (snapshot in historySnapshot.children) {
+                        val questionID = snapshot.child("questionID").getValue(String::class.java)
+                        val isAnswered = snapshot.child("answered").getValue(Boolean::class.java) ?: true
+                        val timestamp = snapshot.child("timestamp").getValue(Long::class.java) ?: 0
 
-                                questionModel.isAnswered = isAnswered
+                        questionID?.let { id ->
+                            val questionRef = database.reference.child("questions").child(id)
+                            questionRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(questionSnapshot: DataSnapshot) {
+                                    if (questionSnapshot.exists()) {
+                                        val text = questionSnapshot.child("question").getValue(String::class.java) ?: ""
+                                        val answers = questionSnapshot.child("answers").children.mapNotNull {
+                                            it.getValue(AnswerModel::class.java)
+                                        }
+                                        val authorID = questionSnapshot.child("authorID").getValue(String::class.java) ?: ""
 
-                                val updatedQuestions = _cachedQuestions.value?.toMutableList() ?: mutableListOf()
-                                updatedQuestions.add(questionModel)
-                                prefs.saveQuestions(updatedQuestions)
-                                _cachedQuestions.postValue(updatedQuestions)
-                            } else {
-                                Log.e("RealtimeDatabase", "Failed to fetch question with ID: $questionID")
-                            }
+                                        val questionModel = QuestionModel(
+                                            id = id,
+                                            text = text,
+                                            answers = answers,
+                                            authorID = authorID,
+                                            timestamp = timestamp,
+                                            isAnswered = isAnswered
+                                        )
+
+                                        val questionStatRef = database.reference.child("questions_stat").child(id)
+                                        questionStatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                            override fun onDataChange(statSnapshot: DataSnapshot) {
+                                                if (statSnapshot.exists()) {
+                                                    val quesCount = statSnapshot.child("ques_count").getValue(Int::class.java) ?: 0
+                                                    val ansCount = statSnapshot.child("ans_count").getValue(Int::class.java) ?: 0
+                                                    val coef = statSnapshot.child("coef").getValue(Double::class.java) ?: 0.0
+
+                                                    val updatedQuestion = questionModel.copy(
+                                                        ques_count = quesCount,
+                                                        ans_count = ansCount,
+                                                        coef = coef
+                                                    )
+
+                                                    questionsList.add(updatedQuestion)
+
+                                                    // Ensure we only keep the latest 7 questions
+                                                    if (questionsList.size > 7) {
+                                                        questionsList.sortByDescending { it.timestamp }
+                                                        questionsList.subList(7, questionsList.size).clear()
+                                                    }
+
+                                                    prefs.saveQuestions(questionsList)
+                                                    _cachedQuestions.postValue(questionsList)
+                                                }
+                                            }
+
+                                            override fun onCancelled(error: DatabaseError) {}
+                                        })
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {}
+                            })
                         }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Log.e("RealtimeDatabase", "Error getting question: ${error.message}")
-                        }
-                    })
+                    }
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("RealtimeDatabase", "Error getting user history: ${error.message}")
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 
-    fun loadCachedQuestions() {
+
+    private val _questions = MutableLiveData<List<QuestionModel>>()
+    val questions: LiveData<List<QuestionModel>> get() = _questions
+
+    // Новая функция для получения всех вопросов пользователя
+    fun getUserQuestions(userID: String) {
+        val questionRef = database.reference.child("questions").child(userID)
+        questionRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val questionsList = mutableListOf<QuestionModel>()
+                    for (questionSnapshot in dataSnapshot.children) {
+                        val text = questionSnapshot.child("question").getValue(String::class.java) ?: ""
+                        val answers = questionSnapshot.child("answers").children.mapNotNull {
+                            it.getValue(AnswerModel::class.java)
+                        }
+                        val authorID = questionSnapshot.child("authorID").getValue(String::class.java) ?: ""
+                        val timestamp = questionSnapshot.child("timestamp").getValue(Long::class.java) ?: 0
+
+                        val questionModel = QuestionModel(
+                            id = questionSnapshot.key ?: "",
+                            text = text,
+                            answers = answers,
+                            authorID = authorID,
+                            timestamp = timestamp,
+                            isAnswered = true
+                        )
+                        questionsList.add(questionModel)
+                    }
+                    _questions.value = questionsList
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+
+    fun loadCachedQuestions() : Boolean {
         val questions = prefs.getQuestions()
         if (questions.isNotEmpty()) {
             val sortedQuestions = questions.sortedByDescending { it.timestamp }
             _cachedQuestions.postValue(sortedQuestions)
+            return true
         }
+        return false
     }
 
     fun clearCachedQuestions() {

@@ -76,5 +76,7 @@
     <string name="error">Ошибка</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="true_lnz">\@true_lnz</string>
+    <string name="lansonz">\@lansonz</string>
 
 </resources>

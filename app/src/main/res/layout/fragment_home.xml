@@ -58,7 +58,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Привет, Name"
+                    android:text="Привет, Гость"
                     android:textColor="@color/mainTextColor"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -129,7 +129,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
-                            android:text="100"
+                            android:text="0"
                             android:textColor="@color/mainTextColor"
                             android:textSize="20sp" />
 
@@ -182,7 +182,7 @@
                             android:id="@+id/rankingTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="32"
+                            android:text="0"
                             android:textColor="@color/mainTextColor"
                             android:textSize="20sp" />
 
@@ -199,7 +199,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/tvQues"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -212,30 +212,84 @@
                 app:layout_constraintStart_toStartOf="@+id/statsLayout"
                 app:layout_constraintTop_toBottomOf="@+id/statsLayout" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/dayQuesLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:elevation="3dp"
-                android:padding="16dp"
-                app:cardCornerRadius="25dp"
-                app:layout_constraintEnd_toEndOf="@+id/textView14"
-                app:layout_constraintStart_toStartOf="@+id/textView14"
-                app:layout_constraintTop_toBottomOf="@+id/textView14">
-
-                <Button
-                    android:id="@+id/btn_ques"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="Вперед!"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_button_selector" />
-            </com.google.android.material.card.MaterialCardView>
-
             <!-- RecyclerView для вопросов -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dayQues"
+                style="@style/Widget.MaterialComponents.CardView"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:elevation="3dp"
+                android:longClickable="true"
+                android:padding="16dp"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="25dp"
+                app:layout_constraintEnd_toEndOf="@+id/tvQues"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvQues"
+                app:layout_constraintTop_toBottomOf="@+id/tvQues"
+                app:rippleColor="@color/cardview_riple_color" >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvDayQues"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:drawableLeft="@drawable/ic_calendar"
+                        android:drawablePadding="5dp"
+                        android:text="@string/app_name"
+                        android:textColor="@color/whiteTextColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/textView21"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_forward" />
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="24dp"
+                        android:drawableLeft="@drawable/ic_groups"
+                        android:drawablePadding="5dp"
+                        android:drawableTint="#eee"
+                        android:text="0 уже ответили!"
+                        android:textColor="#eee"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="28dp"
+                        android:text="Время открывать - сейчас!"
+                        android:textColor="@color/whiteTextColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tvDayQues"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDayQues" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/textView15"
@@ -249,7 +303,7 @@
                 android:textColor="@color/subTextColor"
                 app:layout_constraintEnd_toEndOf="@+id/statsLayout"
                 app:layout_constraintStart_toStartOf="@+id/statsLayout"
-                app:layout_constraintTop_toBottomOf="@+id/dayQuesLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/dayQues" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/questionsRecyclerView"
@@ -260,11 +314,11 @@
                 android:background="@color/mainBgColor"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider4"
-                tools:listitem="@layout/item_question"
-                tools:visibility="gone" />
+                tools:listitem="@layout/item_question" />
 
             <View
                 android:id="@+id/divider4"
@@ -280,8 +334,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/newUserBlock"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/divider4"
                 app:layout_constraintStart_toStartOf="@+id/divider4"
                 app:layout_constraintTop_toBottomOf="@+id/divider4">
@@ -298,10 +354,10 @@
                     android:textColor="@color/subTextColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvHistoryPlug" />
 
                 <TextView
-                    android:id="@+id/textView17"
+                    android:id="@+id/tvHistoryPlug"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -317,8 +373,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Узнайте новое и вдохновляющее, просматривая вопросы других пользователей!"
-                    app:layout_constraintEnd_toEndOf="@+id/textView17"
-                    app:layout_constraintStart_toStartOf="@+id/textView17"
+                    app:layout_constraintEnd_toEndOf="@+id/tvHistoryPlug"
+                    app:layout_constraintStart_toStartOf="@+id/tvHistoryPlug"
                     app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
                 <Button

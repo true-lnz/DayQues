@@ -61,9 +61,6 @@ class MyApplication : MultiDexApplication(), LifeCycleDelegate {
         if (mAuth?.currentUser != null && currentUser != null) {
             currentUser?.let {
                 it.active = true
-                Log.d("TAG", "mAuth aдрес $it.profilePictureURL")
-                Log.d("TAG", "prefs адрес ${Prefs.getInstance(this).getUser()?.profilePictureURL}")
-                Log.d("TAG", "MyApp адрес ${MyApplication.currentUser?.profilePictureURL}")
                 RealtimeDatabaseUtil.updateUser(it) {
                     // Successfully updated user
                 }

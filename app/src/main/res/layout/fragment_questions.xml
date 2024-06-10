@@ -18,9 +18,9 @@
             android:id="@+id/tvHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="24dp"
             android:text="Вопросы дня"
             android:textColor="@color/mainTextColor"
             android:textSize="24sp"
@@ -29,20 +29,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:background="?android:attr/listDivider"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewQuestions"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/top_container"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHeader"
-            tools:listitem="@layout/item_notification" />
+            app:layout_constraintTop_toBottomOf="@+id/divider4"
+            tools:listitem="@layout/item_question" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

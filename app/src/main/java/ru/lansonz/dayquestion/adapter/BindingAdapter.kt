@@ -1,5 +1,6 @@
 package ru.lansonz.dayquestion.adapter
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -37,6 +38,15 @@ fun setAddress(textView: TextView, address: String) {
         textView.text = "Не указано"
     } else {
         textView.text = address
+    }
+}
+
+@BindingAdapter("setSocial")
+fun setSocial(textView: TextView, text: String) {
+    if (text == "") {
+        textView.text = "Не указано"
+    } else {
+        textView.text = text
     }
 }
 
@@ -79,6 +89,9 @@ fun convertTimestampToDateString(view: TextView, timestamp: Long?) {
 
         val dayDifference = todayCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR)
         val dayOfWeek = dayFormat.format(date).capitalize(Locale.getDefault())
+
+        Log.d("TimestampConversion", "Timestamp: $timestamp, Date: ${dateFormat.format(date)}, Today: ${todayCalendar.time}, DayDifference: $dayDifference")
+
         val formattedDate = when {
             dayDifference == 0 -> "Сегодня, ${dateFormat.format(date)}"
             dayDifference == 1 -> "Вчера, ${dateFormat.format(date)}"
@@ -88,6 +101,7 @@ fun convertTimestampToDateString(view: TextView, timestamp: Long?) {
         view.text = formattedDate
     }
 }
+
 
 @BindingAdapter("formattedNumber")
 fun setFormattedNumber(textView: TextView, number: Int) {

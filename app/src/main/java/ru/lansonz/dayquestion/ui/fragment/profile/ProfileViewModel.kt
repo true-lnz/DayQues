@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import ru.lansonz.dayquestion.utils.MyApplication
+import ru.lansonz.dayquestion.utils.Prefs
 
 class ProfileViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
@@ -25,9 +26,10 @@ class ProfileViewModel : ViewModel() {
     val profileUpdateError: LiveData<String>
         get() = _profileUpdateError
 
-    fun updateProfile(fullName: String, address: String, email: String, imageUri: Uri?) {
+    fun updateProfile(fullName: String, address: String, email: String) {
         val user = auth.currentUser ?: return
         val userId = user.uid
+        val imageUri = user.photoUrl
         val userRef = database.reference.child("users").child(userId)
 
         if (imageUri != null) {
@@ -90,6 +92,7 @@ class ProfileViewModel : ViewModel() {
             email = updatedData["email"] as? String ?: email
             profilePictureURL = updatedData["profilePictureURL"] as? String ?: profilePictureURL
         }
+        Prefs.getInstance(MyApplication.getInstance()).saveUser(currentUser!!)
     }
 
     fun updateProfilePicture(imageUri: Uri) {

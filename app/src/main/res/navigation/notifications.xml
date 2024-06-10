@@ -7,6 +7,63 @@
     <fragment
         android:id="@+id/notificationFragment"
         android:name="ru.lansonz.dayquestion.ui.fragment.notification.NotificationFragment"
-        android:label="NotificationFragment" />
+        android:label="NotificationFragment" >
+        <action
+            android:id="@+id/action_notificationFragment_to_questionPreview"
+            app:destination="@id/questionPreview"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_notificationFragment_to_addQuesFragment2"
+            app:destination="@id/addQuesFragment2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_notificationFragment_to_profilePreview"
+            app:destination="@id/profilePreview" />
+        <action
+            android:id="@+id/action_notificationFragment_to_profileFragment2"
+            app:destination="@id/profileFragment2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionPreview"
+        android:name="ru.lansonz.dayquestion.ui.fragment.question.QuestionPreview"
+        android:label="QuestionPreview"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/addQuesFragment2"
+        android:name="ru.lansonz.dayquestion.ui.fragment.question.AddQuesFragment"
+        android:label="AddQuesFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/profilePreview"
+        android:name="ru.lansonz.dayquestion.ui.fragment.profile.ProfilePreview"
+        android:label="ProfilePreview"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="ru.lansonz.dayquestion.ui.fragment.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
 </navigation>

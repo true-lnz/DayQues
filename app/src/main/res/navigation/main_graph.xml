@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
     app:startDestination="@id/home">
 
-    <include app:graph="@navigation/home"/>
-    <include app:graph="@navigation/auth"/>
     <include app:graph="@navigation/favorites"/>
     <include app:graph="@navigation/notifications"/>
     <include app:graph="@navigation/dayques"/>
     <include app:graph="@navigation/questions"/>
-    <include app:graph="@navigation/sign_up"/>
     <include app:graph="@navigation/profile"/>
+    <include app:graph="@navigation/home"/>
 
     <action
         android:id="@+id/action_logout"
@@ -40,6 +39,157 @@
         app:popExitAnim="@anim/nav_default_pop_exit_anim"
         app:popUpTo="@id/main_graph"
         app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="ru.lansonz.dayquestion.ui.fragment.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_questionActivity"
+            app:destination="@id/questionActivity"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ru.lansonz.dayquestion.ui.fragment.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="ru.lansonz.dayquestion.ui.fragment.authHost.AuthFragment"
+        android:label="AuthFragment"
+        tools:layout="@layout/fragment_auth">
+        <action
+            android:id="@+id/action_authFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/onBoarding"
+        android:name="ru.lansonz.dayquestion.ui.fragment.onBoarding.OnBoarding"
+        android:label="OnBoarding"
+        tools:layout="@layout/fragment_on_boarding">
+        <action
+            android:id="@+id/action_onBoarding_to_authFragment"
+            app:destination="@id/authFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <activity
+        android:id="@+id/questionActivity"
+        android:name="ru.lansonz.dayquestion.ui.activity.question.QuestionActivity"
+        android:label="activity_question"
+        tools:layout="@layout/activity_question" />
+
+
+    <fragment
+        android:id="@+id/signUpAvatar"
+        android:name="ru.lansonz.dayquestion.ui.fragment.signUp.SignUpAvatar"
+        android:label="SignUpAvatar"
+        tools:layout="@layout/fragment_sign_up2">
+        <action
+
+            android:id="@+id/action_signUpAvatar_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="ru.lansonz.dayquestion.ui.fragment.signUp.SignUpFragment"
+        android:label="SignUpFragment"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_authFragment"
+            app:destination="@id/authFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_signUpFragment_to_signUpAvatar"
+            app:destination="@id/signUpAvatar"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment2"
+        android:name="ru.lansonz.dayquestion.ui.fragment.favorites.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+
+
+    <fragment
+        android:id="@+id/addQuesFragment"
+        android:name="ru.lansonz.dayquestion.ui.fragment.question.AddQuesFragment"
+        android:label="fragment_add_ques"
+        tools:layout="@layout/fragment_add_ques" >
+        <action
+            android:id="@+id/action_addQuesFragment_to_questionSuccess"
+            app:destination="@id/questionSuccess"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionSuccess"
+        android:name="ru.lansonz.dayquestion.ui.fragment.question.QuestionSuccess"
+        android:label="QuestionSuccess" >
+        <action
+            android:id="@+id/action_questionSuccess_to_questionPreview2"
+            app:destination="@id/questionPreview2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionPreview2"
+        android:name="ru.lansonz.dayquestion.ui.fragment.question.QuestionPreview"
+        android:label="QuestionPreview" />
 
 </navigation>
 

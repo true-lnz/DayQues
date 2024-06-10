@@ -23,6 +23,8 @@ class QuestionsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_questions, container, false)
 
+
+
         return view
     }
 }

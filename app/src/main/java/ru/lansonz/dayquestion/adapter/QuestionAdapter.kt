@@ -3,6 +3,7 @@ package ru.lansonz.dayquestion.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.lansonz.dayquestion.R
 import ru.lansonz.dayquestion.model.QuestionModel
 import ru.lansonz.dayquestion.databinding.ItemQuestionBinding
 
@@ -33,4 +34,5 @@ class QuestionAdapter(private var questions: List<QuestionModel>) :
             binding.executePendingBindings()
         }
     }
+
 }

@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import ru.lansonz.dayquestion.R
+import ru.lansonz.dayquestion.model.NotificationModel
+import ru.lansonz.dayquestion.model.QuestionModel
 import ru.lansonz.dayquestion.ui.activity.question.QuestionViewModel
 import ru.lansonz.dayquestion.utils.MyApplication
+import ru.lansonz.dayquestion.utils.Prefs
 
 class AddQuesFragment : Fragment() {
     private lateinit var questionEditText: EditText
@@ -22,6 +26,7 @@ class AddQuesFragment : Fragment() {
     private lateinit var answersContainer: LinearLayout
     private lateinit var questionTypeToggleGroup: MaterialButtonToggleGroup
     private lateinit var viewModel: QuestionViewModel
+    private lateinit var q: QuestionModel
     private val answerViews = mutableListOf<View>()
     private var answerCount = 0
     private var lastCheckedId = View.NO_ID
@@ -48,7 +53,6 @@ class AddQuesFragment : Fragment() {
         val btnChoice2: MaterialButton = view.findViewById(R.id.btn_choice_2)
 
         addAnswerButton.setOnClickListener { addAnswerField() }
-        saveQuestionButton.setOnClickListener { saveQuestion() }
         btnChoice1.setOnClickListener { handleToggleSelection(R.id.btn_choice_1) }
         btnChoice2.setOnClickListener { handleToggleSelection(R.id.btn_choice_2) }
 
@@ -64,6 +68,23 @@ class AddQuesFragment : Fragment() {
             questionTypeToggleGroup.check(R.id.btn_choice_1)
             answersBlock.visibility = View.GONE
             addAnswerField()
+        }
+
+        saveQuestionButton.setOnClickListener {
+            saveQuestion()
+
+            val notes =  listOf(
+                NotificationModel("Вопрос Дня", "Cейчас", "Ваш Вопрос Дня Был опубликован", "Перейти"),
+            )
+
+            Prefs.getInstance(MyApplication.getInstance()).saveNotifications(notes)
+            NotificationUtils.sendNotification(requireContext(), notes.get(0).userName, notes.get(0).message)
+
+
+            findNavController().navigate(R.id.questionSuccess)
+            //q = viewModel.currentQuestion.value!!
+            //viewModel.setCurrentQuestion(q)
+
         }
 
         return view
@@ -142,7 +163,7 @@ class AddQuesFragment : Fragment() {
         }
 
         if (question.isNotBlank() && answers.isNotEmpty()) {
-            viewModel.createQuestionAndAnswers(MyApplication.currentUser!!.userID, question, answers)
+            q = viewModel.createQuestionAndAnswers(MyApplication.currentUser!!.userID, question, answers)
             Toast.makeText(requireContext(), "Вопрос сохранен", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(requireContext(), "Введите вопрос и хотя бы один вариант ответа", Toast.LENGTH_SHORT).show()

@@ -1,130 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_v4">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_back"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center|center_horizontal|center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="0dp"
-        app:cornerRadius="1500dp"
-        app:icon="@drawable/ic_arrow_back"
-        app:iconPadding="0dp"
-        app:iconSize="24dp"
-        app:iconTint="@color/subBgColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="@color/whiteTextColor" />
+    <data>
+        <variable
+            name="question"
+            type="ru.lansonz.dayquestion.model.QuestionModel" />
+    </data>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_v4">
 
-    <TextView
-        android:id="@+id/tvPreview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Просмотр"
-        android:textColor="@color/whiteTextColor"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_back"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp"
+            app:cornerRadius="1500dp"
+            app:icon="@drawable/ic_arrow_back"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="@color/subBgColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/whiteTextColor" />
 
+        <TextView
+            android:id="@+id/tvPreview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Просмотр"
+            android:textColor="@color/whiteTextColor"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_back"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvQuestion"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="24dp"
-        android:text="Вопрос Дня"
-        android:textColor="@color/whiteTextColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvQuestion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="24dp"
+            android:text="Вопрос"
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvQuestionText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Текст"
-        android:textColor="@color/whiteTextColor"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/tvQuestion"
-        app:layout_constraintStart_toStartOf="@+id/tvQuestion"
-        app:layout_constraintTop_toBottomOf="@+id/tvQuestion" />
+        <TextView
+            android:id="@+id/tvQuestionText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{question.text}"
+            android:textColor="@color/whiteTextColor"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tvQuestion"
+            app:layout_constraintStart_toStartOf="@+id/tvQuestion"
+            app:layout_constraintTop_toBottomOf="@+id/tvQuestion" />
 
-    <TextView
-        android:id="@+id/tvAnswers"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Ответы"
-        android:textColor="@color/whiteTextColor"
-        app:layout_constraintEnd_toEndOf="@+id/tvQuestionText"
-        app:layout_constraintStart_toStartOf="@+id/tvQuestionText"
-        app:layout_constraintTop_toBottomOf="@+id/tvQuestionText" />
+        <TextView
+            android:id="@+id/tvAnswers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Ответы"
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintEnd_toEndOf="@+id/tvQuestionText"
+            app:layout_constraintStart_toStartOf="@+id/tvQuestionText"
+            app:layout_constraintTop_toBottomOf="@+id/tvQuestionText" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@+id/tvAnswers"
-        app:layout_constraintStart_toStartOf="@+id/tvAnswers"
-        app:layout_constraintTop_toBottomOf="@+id/tvAnswers">
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/tvAnswers"
+            app:layout_constraintStart_toStartOf="@+id/tvAnswers"
+            app:layout_constraintTop_toBottomOf="@+id/tvAnswers">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/answer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Текст ответа 1"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btn_edit"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Редактировать"
-        android:textAllCaps="false"
-        android:textColor="@color/whiteTextColor"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+            <TextView
+                android:id="@+id/answer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Текст ответа 2"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvTimestamp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
-        android:text="Время создания:"
-        android:textColor="@color/whiteTextColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/answer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Текст ответа 3"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvAuthor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Автор:"
-        android:textColor="@color/whiteTextColor"
-        app:layout_constraintBottom_toTopOf="@+id/tvTimestamp"
-        app:layout_constraintEnd_toEndOf="@+id/tvTimestamp"
-        app:layout_constraintStart_toStartOf="@+id/tvTimestamp" />
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_edit"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Редактировать"
+            android:textAllCaps="false"
+            android:textColor="@color/whiteTextColor"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+        <TextView
+            android:id="@+id/tvTimestamp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="32dp"
+            android:text="Время создания:"
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Автор:"
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBottom_toTopOf="@+id/tvTimestamp"
+            app:layout_constraintEnd_toEndOf="@+id/tvTimestamp"
+            app:layout_constraintStart_toStartOf="@+id/tvTimestamp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

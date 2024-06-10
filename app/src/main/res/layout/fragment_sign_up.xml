@@ -52,6 +52,7 @@
                 android:paddingVertical="2dp"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
+                android:maxLength="24"
                 android:textColor="@color/mainTextColor"
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -74,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_none"
                 android:hint="@string/email"
+                android:maxLength="24"
                 android:inputType="textEmailAddress"
                 android:paddingVertical="2dp"
                 android:paddingStart="0dp"
@@ -100,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_none"
                 android:hint="@string/password"
+                android:maxLength="32"
                 android:inputType="textPassword"
                 android:paddingVertical="2dp"
                 android:paddingStart="0dp"

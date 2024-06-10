@@ -22,6 +22,45 @@
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/guestUserLayout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="24dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navHeader">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Тут пустовато... Может вам стоит зарегистрироваться, чтобы получить больше функционала?"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_go_to_sign_up"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_go_to_sign_up"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="false"
+                    app:cornerRadius="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/textView14"
+                    app:layout_constraintStart_toStartOf="@+id/textView14"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/navHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +103,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@{user.fullName}"
+                    android:text="@{user.fullName.isEmpty() ? `Гость` : user.fullName}"
                     android:textAlignment="center"
                     android:textColor="@color/subBgColor"
                     android:textSize="24sp"
@@ -80,7 +119,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@{user.email}"
+                    android:text="@{user.email.isEmpty() ? `Недоступно` : user.email}"
                     android:textAlignment="center"
                     android:textColor="@color/mainBgColor"
                     android:textSize="14sp"
@@ -159,9 +198,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Очков"
+                        android:text="112 Очков"
                         android:textAlignment="center"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/whiteTextColor"
                         android:textStyle="bold" />
 
                     <View
@@ -175,7 +214,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Вопросов"
+                        android:text="3 вопроса"
                         android:textAlignment="center"
                         android:textColor="@color/whiteTextColor" />
 
@@ -190,7 +229,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Ответов"
+                        android:text="5 ответов"
                         android:textAlignment="center"
                         android:textColor="@color/whiteTextColor" />
                 </LinearLayout>
@@ -206,6 +245,7 @@
                 android:orientation="horizontal"
                 android:paddingStart="24dp"
                 android:paddingRight="24dp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navHeader">
@@ -213,10 +253,10 @@
                 <Button
                     android:id="@+id/btn_vk"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
-                    setAddress="@{user.email}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="@string/true_lnz"
                     android:textAlignment="viewStart"
                     android:textAllCaps="false"
                     android:textColor="@color/text_button_selector2"
@@ -230,7 +270,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    setAddress="@{user.email}"
+                    android:text="@string/lansonz"
                     android:textAlignment="viewStart"
                     android:textAllCaps="false"
                     android:textColor="@color/text_button_selector2"
@@ -240,24 +280,55 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/questionsBlock"
                 android:layout_width="match_parent"
-                android:layout_height="214dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="24dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/socialBlock">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <TextView
+                    android:id="@+id/textView15"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/rounded_container"
-                    android:elevation="4dp"
+                    android:drawableStart="@drawable/ic_history"
+                    android:drawablePadding="5dp"
+                    android:drawableTint="@color/mainTextColor"
+                    android:text="Опубликованные вопросы"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/questionsRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mainBgColor"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider4"
+                    tools:listitem="@layout/item_question" />
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:attr/listDivider"
+                    android:elevation="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

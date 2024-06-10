@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import ru.lansonz.dayquestion.R
 import ru.lansonz.dayquestion.model.UserModel
 import ru.lansonz.dayquestion.utils.MyApplication
 import ru.lansonz.dayquestion.databinding.FragmentAuthBinding
@@ -51,8 +52,8 @@ class AuthFragment : Fragment() {
                 }
             }
             if (it) {
-/*                this.findNavController()
-                    .navigate(AuthFragmentDirections.actionHome())*/
+                this.findNavController()
+                    .navigate(R.id.homeFragment)
                 viewModel.doneNavigationToSkip()
             }
         })

@@ -19,6 +19,7 @@ class ProfilePreview : Fragment() {
     ): View? {
 
 
+
         return inflater.inflate(R.layout.fragment_profile_preview, container, false)
     }
 }

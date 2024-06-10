@@ -1,7 +1,12 @@
 package ru.lansonz.dayquestion.ui.fragment.profile
 
 import android.Manifest
+import android.R.attr.label
+import android.R.attr.text
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -16,28 +21,44 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import ru.lansonz.dayquestion.utils.MyApplication
+import com.vk.api.sdk.VK
 import ru.lansonz.dayquestion.R
+import ru.lansonz.dayquestion.adapter.QuestionAdapter
+import ru.lansonz.dayquestion.adapter.QuestionsAdapter
 import ru.lansonz.dayquestion.databinding.FragmentProfileBinding
-import ru.lansonz.dayquestion.ui.activity.host.HostActivity
+import ru.lansonz.dayquestion.model.NotificationModel
 import ru.lansonz.dayquestion.ui.activity.host.HostViewModel
+import ru.lansonz.dayquestion.ui.activity.question.QuestionViewModel
+import ru.lansonz.dayquestion.ui.activity.question.ViewModelFactory
+import ru.lansonz.dayquestion.utils.MyApplication
 import ru.lansonz.dayquestion.utils.Prefs
+import ru.lansonz.dayquestion.utils.RealtimeDatabaseUtil
+
 
 class ProfileFragment : Fragment() {
 
     private val PERMISSION_CODE = 1
     private val PICK_IMAGE_CODE = 2
     private var imageUri: Uri? = null
+    lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: ProfileViewModel
     private lateinit var hostViewModel: HostViewModel
+    private lateinit var quesViewModel: QuestionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +68,7 @@ class ProfileFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         hostViewModel = ViewModelProvider(this).get(HostViewModel::class.java)
+        quesViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance()).get(QuestionViewModel::class.java)
 
         binding.lifecycleOwner = this
         binding.user = MyApplication.currentUser
@@ -60,12 +82,94 @@ class ProfileFragment : Fragment() {
         binding.profileImage.setOnClickListener { view ->
             showPopupMenu(view)
         }
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
         binding.btnSettings.setOnClickListener {
+            MyApplication.currentUser!!.active = false
+            RealtimeDatabaseUtil.updateUser(MyApplication.currentUser!!) {
+                mAuth?.signOut()
+            }
+            googleSignInClient.signOut()
+            VK.logout()
+            MyApplication.currentUser = null
+            Prefs.getInstance(MyApplication.getInstance()).clearAll()
+            findNavController().navigate(R.id.action_logout)
         }
 
+        binding.btnVk.setOnClickListener {
+            // Получим текст кнопки
+            val textToCopy = binding.btnVk.text.toString()
 
+            val clipboard = getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+
+            // Создадим объект ClipData с текстом для копирования
+            val clip = ClipData.newPlainText("simple text", textToCopy)
+
+            // Скопируем текст в буфер обмена
+            clipboard.setPrimaryClip(clip)
+
+            // Покажем уведомление пользователю
+            Toast.makeText(requireContext(), "Cкопировано в буфер обмена", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnTg.setOnClickListener {
+            // Получим текст кнопки
+            val textToCopy = binding.btnTg.text.toString()
+
+            val clipboard = getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+
+            // Создадим объект ClipData с текстом для копирования
+            val clip = ClipData.newPlainText("simple text", textToCopy)
+
+            // Скопируем текст в буфер обмена
+            clipboard.setPrimaryClip(clip)
+
+            // Покажем уведомление пользователю
+            Toast.makeText(requireContext(), "Cкопировано в буфер обмена", Toast.LENGTH_SHORT).show()
+        }
+
+        if (MyApplication.currentUser?.fullName == "") {
+            binding.socialBlock.visibility = View.GONE
+            binding.questionsBlock.visibility = View.GONE
+            binding.guestUserLayout.visibility = View.VISIBLE
+        }
+
+        if (Prefs.getInstance(MyApplication.getInstance()).isNewUser) {
+            Prefs.getInstance(MyApplication.getInstance()).isNewUser = false
+            binding.textView11.text = "0 очков"
+            binding.textView12.text = "0 вопросов"
+            binding.textView13.text = "0 ответов"
+        }
+
+        binding.btnGoToSignUp.setOnClickListener {
+            Prefs.getInstance(MyApplication.getInstance()).clearAll()
+            findNavController().navigate(R.id.authFragment)
+        }
+
+        if (MyApplication.currentUser?.fullName != "") {
+            quesViewModel.getUserQuestions(MyApplication.currentUser?.userID!!)
+            setupRecyclerView()
+
+        }
 
         return binding.root
+    }
+
+    private fun setupRecyclerView() {
+        val recyclerView = binding.questionsRecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        quesViewModel.questions.observe(viewLifecycleOwner, Observer { questions ->
+            if (questions != null) {
+                val adapter = QuestionsAdapter(questions)
+                recyclerView.adapter = adapter
+            }
+        })
     }
     private fun showPopupMenu(view: View) {
         val popup = PopupMenu(requireContext(), view, 1, 0, R.style.CustomPopupMenu)

@@ -55,6 +55,7 @@
             android:layout_marginBottom="16dp"
             android:drawableEnd="@drawable/ic_chat_show"
             android:drawablePadding="8dp"
+            android:drawableTint="#fff"
             android:text="Комментарии"
             android:textColor="#FFFFFF"
             android:textSize="14sp"

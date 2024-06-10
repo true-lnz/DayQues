@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/favourites">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favourites"
+    app:startDestination="@id/favoritesFragment3">
 
+    <fragment
+        android:id="@+id/favoritesFragment3"
+        android:name="ru.lansonz.dayquestion.ui.fragment.favorites.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
 </navigation>

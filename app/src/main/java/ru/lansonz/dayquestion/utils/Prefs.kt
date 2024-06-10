@@ -19,6 +19,12 @@ class Prefs private constructor(context: Context) {
             mPrefs.edit().putBoolean(ISFIRSTRUN, isFirstRun).apply()
         }
 
+    var isNewUser: Boolean
+        get() = mPrefs.getBoolean(ISNEWUSER, true)
+        set(isNewUser) {
+            mPrefs.edit().putBoolean(ISNEWUSER, isNewUser).apply()
+        }
+
     var isQuestionAskedToday: Boolean
         get() = mPrefs.getBoolean(QUESTION_ASKED_TODAY, false)
         set(value) {
@@ -97,6 +103,7 @@ class Prefs private constructor(context: Context) {
     companion object {
         private const val PREFS_NAME = "my_prefs"
         private const val USER = "user"
+        private const val ISNEWUSER = "isNewUser"
         private const val ISFIRSTRUN = "hasCompletedWalkthrough"
         private const val NOTIFICATIONS = "notifications"
         private const val QUESTIONS = "questions"
