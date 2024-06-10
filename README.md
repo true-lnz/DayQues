@@ -37,6 +37,11 @@
 5.	Внедрить систему регистрации, профилей пользователей и подписок;
 6.	Провести тестирование приложения и устранить обнаруженные ошибки.
 
+<details>
+  <summary>Q1: What is the best Language in the World? </summary>
+   A1: JavaScript
+</details>
+
 #### Скриншоты:
 ![Приложение 1](Screenshot/Welcome.png)
 ![Приложение 2](Screenshot/Login.png)
