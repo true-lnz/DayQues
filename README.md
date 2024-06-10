@@ -37,23 +37,22 @@
 5.	Внедрить систему регистрации, профилей пользователей и подписок;
 6.	Провести тестирование приложения и устранить обнаруженные ошибки.
 
+#### Скриншоты:
+<img src="Screenshot/Home.png" alt="" width="500">
 <details>
-  <summary>Q1: What is the best Language in the World? </summary>
-   A1: JavaScript
+  <summary>Другие скриншоты приложения</summary>
+  <img src="Screenshot/Welcome.png" alt="" width="500">
+  <img src="Screenshot/Login.png" alt="" width="500">
+  <img src="Screenshot/Registration.png" alt="" width="500">
+  <img src="Screenshot/Registration2.png" alt="" width="500">
+  <img src="Screenshot/DayQuestion.png" alt="" width="500">
+  <img src="Screenshot/Profile.png" alt="" width="500">
+  <img src="Screenshot/ProfileEdit2.png" alt="" width="500">
+  <img src="Screenshot/Notifications.png" alt="" width="500">
+  <img src="Screenshot/NewQuestions.png" alt="" width="500">
 </details>
 
-#### Скриншоты:
-![Приложение 1](Screenshot/Welcome.png)
-![Приложение 2](Screenshot/Login.png)
-![Приложение 3](Screenshot/Registration.png)
-![Приложение 4](Screenshot/Registration2.png)
-![Приложение 5](Screenshot/Home.png)
-![Приложение 6](Screenshot/DayQuestion.png)
-![Приложение 7](Screenshot/Profile.png)
-![Приложение 8](Screenshot/ProfileEdit.png)
-![Приложение 9](Screenshot/ProfileEdit2.png)
-![Приложение 10](Screenshot/Notifications.png)
-![Приложение 11](Screenshot/NewQuestions.png)
+
 
 #### Связь со мной:
 [Вконтакте](https://vk.com/true_lnz/)
