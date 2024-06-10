@@ -38,21 +38,19 @@
 6.	Провести тестирование приложения и устранить обнаруженные ошибки.
 
 #### Скриншоты:
-<img src="Screenshot/Home.png" alt="" width="500">
+<img src="Screenshot/Home.png" alt="" width="400">
 <details>
   <summary>Другие скриншоты приложения</summary>
-  <img src="Screenshot/Welcome.png" alt="" width="500">
-  <img src="Screenshot/Login.png" alt="" width="500">
-  <img src="Screenshot/Registration.png" alt="" width="500">
-  <img src="Screenshot/Registration2.png" alt="" width="500">
-  <img src="Screenshot/DayQuestion.png" alt="" width="500">
-  <img src="Screenshot/Profile.png" alt="" width="500">
-  <img src="Screenshot/ProfileEdit2.png" alt="" width="500">
-  <img src="Screenshot/Notifications.png" alt="" width="500">
-  <img src="Screenshot/NewQuestions.png" alt="" width="500">
+  <img src="Screenshot/Welcome.png" alt="" width="400">
+  <img src="Screenshot/Login.png" alt="" width="400">
+  <img src="Screenshot/Registration.png" alt="" width="400">
+  <img src="Screenshot/Registration2.png" alt="" width="400">
+  <img src="Screenshot/DayQuestion.png" alt="" width="400">
+  <img src="Screenshot/Profile.png" alt="" width="400">
+  <img src="Screenshot/ProfileEdit2.png" alt="" width="400">
+  <img src="Screenshot/Notifications.png" alt="" width="400">
+  <img src="Screenshot/NewQuestions.png" alt="" width="400">
 </details>
-
-
 
 #### Связь со мной:
 [Вконтакте](https://vk.com/true_lnz/)
